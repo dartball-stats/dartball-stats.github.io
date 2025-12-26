@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <title>Player Page</title>
+
+		<!-- DEBUGGING -->
+    <style>
+      .warning, .error {color: red}
+      .error {background-color: yellow}
+			/*
+      body {
+          display: flex;
+          flex-direction: column;
+          font-family: monospace;
+          white-space: break-spaces;
+      }
+			*/
+    </style>
+		<!-- /DEBUGGING -->
+		
+		<!-- CSS -->
+		<link rel="stylesheet" href="css/sortable-table.css" type="text/css">
+		<link rel="stylesheet" href="css/br.css" type="text/css">
+		<link rel="stylesheet" href="css/sr-min-mod.css" type="text/css">
+		<style> #info {min-height:0;} </style>
+		<!-- /CSS -->
+
+		<!-- JS -->
+		<script src="js/br.js"></script>
+	<!--	<script src="js/sr-min.js"></script>-->
+		<script src="js/tables.js"></script>
+    <script>
+			(function(){
+	      const logHtml = function(cssClass,...args){
+	        const ln = document.createElement('div');
+	        if(cssClass) ln.classList.add(cssClass);
+	        ln.append(document.createTextNode(args.join(' ')));
+	        document.body.append(ln);
+	      };
+				const params = new URL(globalThis.location.href).searchParams;
+				const p = params.get("p") ?? 1;// id_team
+	      const w = new Worker("player-worker.js?sqlite3.dir=jswasm&p="+p);
+				let schedule;
+				let playerSeasonStats;
+				let playerCareerStats;
+	      w.onmessage = function({data}){
+	        switch(data.type){
+						case 'log':
+							logHtml(data.payload.cssClass, ...data.payload.args);
+							break;
+						case 'schedule':
+							schedule = data.payload.arg;
+							break;
+						case 'playerSeasonStats':
+							playerSeasonStats = data.payload.arg;
+							break;
+						case 'playerCareerStats':
+							/* last object returned by worker */
+							playerCareerStats = data.payload.arg;
+
+							dartball.printPlayerInfo(playerCareerStats);
+							dartball.printTeamSchedule(schedule,playerCareerStats);
+							dartball.printPlayerStats(playerSeasonStats,playerCareerStats);
+							break;
+						default:
+							logHtml('error',"Unhandled message:",data.type);
+						
+					};
+				}
+			})();
+		</script>
+		<!-- /JS -->
+  </head>
+  <body class="br">
+		<div id="wrap" style="width:100%">
+			<div id="info" class="players">
+				<div id="meta">
+					<div>
+						<h1>Player Name</h1>
+					</div>
+				</div>
+			</div>
+			<div id="content" role="main">
+				<div id="player_stats" class="table_wrapper">
+					<div class="section_heading players_standard_batting" id="players_stats_sh">
+			  		<span class="section_anchor" id="players_stats_link" data-label="Player Stats"></span><h2>Season Stats</h2>
+			  	</div>
+					<div class="table_container" id="div_players_stats">
+					</div>
+				</div>
+				<div id="all_team_schedule" class="table_wrapper">
+					<div class="section_heading assoc_team_schedule" id="team_schedule_sh">
+			  		<span class="section_anchor" id="team_schedule_link" data-label="Team Game-by-Game Schedule"></span><h2>Game Log</h2>
+			  	</div>
+					<div class="table_container" id="div_team_schedule">
+					</div>
+				</div>
+				<div id="guts">
+					<a href="guts.html">Guts</a>
+				</div>
+			</div>
+		</div>
+
+  </body>
+</html>

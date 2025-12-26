@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <title>Team Page</title>
+
+		<!-- DEBUGGING -->
+    <style>
+      .warning, .error {color: red}
+      .error {background-color: yellow}
+			/*
+      body {
+          display: flex;
+          flex-direction: column;
+          font-family: monospace;
+          white-space: break-spaces;
+      }
+			*/
+    </style>
+		<!-- /DEBUGGING -->
+		
+		<!-- CSS -->
+		<link rel="stylesheet" href="css/sortable-table.css" type="text/css">
+		<link rel="stylesheet" href="css/br.css" type="text/css">
+		<link rel="stylesheet" href="css/sr-min-mod.css" type="text/css">
+		<style> #info {min-height:0;} </style>
+		<!-- /CSS -->
+
+		<!-- JS -->
+		<script src="js/br.js"></script>
+	<!--	<script src="js/sr-min.js"></script>-->
+		<script src="js/tables.js"></script>
+    <script>
+			(function(){
+	      const logHtml = function(cssClass,...args){
+	        const ln = document.createElement('div');
+	        if(cssClass) ln.classList.add(cssClass);
+	        ln.append(document.createTextNode(args.join(' ')));
+	        document.body.append(ln);
+	      };
+				const params = new URL(globalThis.location.href).searchParams;
+				const t = params.get("t") ?? 13;// id_team
+				const y = params.get("y") ?? 4;// id_season
+	      const w = new Worker("worker.js?sqlite3.dir="+encodeURIComponent("/jswasm")+"&t="+t+"&y="+y);
+
+				// password management
+				let password = document.cookie
+					.split("; ")
+					.find((row) => row.startsWith("password="))
+					?.split("=")[1];
+				if (typeof password === 'undefined') {
+					password = prompt("Enter passphrase","passphrase");
+					document.cookie = "password=" + password;
+				}
+				w.postMessage({password: password});
+
+				// message handling
+				let schedule;
+				let teamSummary;
+				let playerStats;
+				let playerStatsMax;
+	      w.onmessage = function({data}){
+	        switch(data.type){
+						/* {{{ */
+						case 'log':
+							logHtml(data.payload.cssClass, ...data.payload.args);
+							break;
+						case 'schedule':
+							schedule = data.payload.arg;
+							break;
+						case 'teamSummary':
+							teamSummary = data.payload.arg;
+							break;
+						case 'playerStatsSummary':
+							playerStats = data.payload.arg;
+							break;
+						case 'playerStatsSummaryMax':
+							/* last object returned by worker */
+							playerStatsMax = data.payload.arg;
+							dartball.printTeamInfo(teamSummary);
+							dartball.printTeamSchedule(schedule,teamSummary);
+							dartball.printPlayerStats(playerStats,teamSummary,playerStatsMax);
+
+							break;
+						default:
+							logHtml('error',"Unhandled message:",data.type);
+						/* }}} */
+					};
+				}
+			})();
+		</script>
+		<!-- /JS -->
+  </head>
+  <body class="br">
+		<div id="wrap" style="width:100%">
+			<div id="info" class="teams">
+				<div id="meta">
+					<div data-template="Partials/Teams/Summary">
+						<h1></h1>
+						<div class="prevnext">
+							<a class="button2 prev"></a>
+							<a class="button2 next"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="content" role="main">
+				<div id="player_stats" class="table_wrapper">
+					<div class="section_heading players_standard_batting" id="players_stats_sh">
+			  		<span class="section_anchor" id="players_stats_link" data-label="Player Stats"></span><h2>Player Stats</h2>
+						<div class="section_heading_text sidescroll_note">
+							<ul>
+								<li>
+									<form class="non_qual_switch" name="form_sortable" id="fs_players_standard_batting">
+										<input type="checkbox" name="hide_non_quals" value="1" id="fs_check_players_standard_batting" checked>
+										<label for="fs_check_players_standard_batting">When table is sorted, hide non-qualifiers for rate stats
+										</label>
+									</form>
+								</li>
+							</ul>
+						</div>
+			  	</div>
+					<div class="table_container" id="div_players_stats">
+					</div>
+				</div>
+				<div id="all_team_schedule" class="table_wrapper">
+					<div class="section_heading assoc_team_schedule" id="team_schedule_sh">
+			  		<span class="section_anchor" id="team_schedule_link" data-label="Team Game-by-Game Schedule"></span><h2>Team Schedule</h2>
+			  	</div>
+					<div class="table_container" id="div_team_schedule">
+					</div>
+				</div>
+				<div id="guts">
+					<a href="/guts">Guts</a>
+				</div>
+			</div>
+		</div> 
+  </body>
+</html>

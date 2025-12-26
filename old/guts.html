@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <title>Guts</title>
+
+		<!-- DEBUGGING -->
+    <style>
+      .warning, .error {color: red}
+      .error {background-color: yellow}
+			/*
+      body {
+          display: flex;
+          flex-direction: column;
+          font-family: monospace;
+          white-space: break-spaces;
+      }
+			*/
+    </style>
+		<!-- /DEBUGGING -->
+		
+		<!-- CSS -->
+		<link rel="stylesheet" href="css/sortable-table.css" type="text/css">
+		<link rel="stylesheet" href="css/br.css" type="text/css">
+		<link rel="stylesheet" href="css/sr-min-mod.css" type="text/css">
+		<style> #info {min-height:0;} </style>
+		<!-- /CSS -->
+
+		<!-- JS -->
+		<script src="js/br.js"></script>
+	<!--	<script src="js/sr-min.js"></script>-->
+		<script src="js/tables.js"></script>
+    <script>
+			(function(){
+	      const logHtml = function(cssClass,...args){
+	        const ln = document.createElement('div');
+	        if(cssClass) ln.classList.add(cssClass);
+	        ln.append(document.createTextNode(args.join(' ')));
+	        document.body.append(ln);
+	      };
+	      const w = new Worker("guts-worker.js?sqlite3.dir=jswasm");
+				let teamSummary;
+				let playerStats;
+				let playerStatsMax;
+	      w.onmessage = function({data}){
+	        switch(data.type){
+						/* {{{ */
+						case 'log':
+							logHtml(data.payload.cssClass, ...data.payload.args);
+							break;
+						case 'linearWeights':
+							linearWeights = data.payload.arg;
+							dartball.printTeamSchedule(linearWeights);
+							break;
+						default:
+							logHtml('error',"Unhandled message:",data.type);
+						/* }}} */
+					};
+				}
+			})();
+		</script>
+		<!-- /JS -->
+  </head>
+  <body class="br">
+		<div id="wrap" style="width:100%">
+			<div id="info" class="teams">
+				<div id="meta">
+					<div data-template="Partials/Teams/Summary">
+						<h1>Guts</h1>
+					</div>
+				</div>
+			</div>
+			<div id="content" role="main">
+				<div id="all_team_schedule" class="table_wrapper setup_long long">
+					<div class="section_heading assoc_team_schedule" id="team_schedule_sh">
+						<h2>Linear Weights and League Constants</h2>
+			  	</div>
+					<div class="table_container" id="div_team_schedule">
+					</div>
+				</div>
+				<div id="math">
+					<p>
+						<math display="block">
+							<mrow>
+								<mi>aOBP</mi>
+								<mo>=</mo>
+								<mfrac>
+									<row>
+											<mo>∑</mo>
+											<mo fence="true" largeop="true" stretchy="true" form="prefix">(</mo>
+												<msub>
+													<mi>w</mi>
+													<mi>base</mi>
+												</msub>
+												<mo>·</mo>
+												<msub>
+													<mi>H</mi>
+													<mi>base</mi>
+												</msub>
+											<mo fence="true" largeop="true" stretchy="true" form="postfix">)</mo>
+									</row>
+									<row>
+										<mi>PA</mi>
+									</row>
+								</mfrac>
+							</mrow>
+						</math>
+					</p>
+					<p>
+						<math display="block">
+							<mrow>
+								<mi>aRC</mi>
+								<mo>=</mo>
+								<mo fence="true" largeop="true" stretchy="true" form="prefix">(</mo>
+									<mfrac>
+										<mrow>
+											<mi>aOBP</mi>
+											<mo>-</mo>
+											<msub>
+												<mi>aOBP</mi>
+												<mi>lg</mi>
+											</msub>
+										</mrow>
+										<mrow>
+											<mi>aOBP Scale</mi>
+										</mrow>
+									</mfrac>
+									<mo>+</mo>
+									<msub>
+										<mrow>
+											<mo>(</mo>
+											<mfrac>
+												<mi>aRC</mi>
+												<mi>PA</mi>
+											</mfrac>
+											<mo>)</mo>
+										</mrow>
+										<mrow>
+											<mi>lg</mi>
+										</mrow>
+									</msub>
+								<mo fence="true" stretchy="true" form="postfix">)</mo>
+								<mo>·</mo>
+								<mi>PA</mi>
+							</mrow>
+						</math>
+					</p>
+					<p>
+						<math display="block">
+							<mrow>
+								<mi>gaRC</mi>
+								<mo>=</mo>
+								<mfrac>
+									<mi>aRC</mi>
+									<mi>PA</mi>
+								</mfrac>
+								<mo>·</mo>
+								<msub>
+									<mrow>
+										<mo fence="true" largeop="true" stretchy="true" form="prefix">(</mo>
+										<mfrac>
+											<mi>PA</mi>
+											<mi>G</mi>
+										</mfrac>
+										<mo fence="true" stretchy="true" form="postfix">)</mo>
+									</mrow>
+									<mi>lg</mi>
+								</msub>
+								<mo>·</mo>
+								<mi>G</mi>
+							</mrow>
+						</math>
+					</p>
+					<p>
+						<math display="block">
+							<mrow>
+								<mi>aRC+</mi>
+								<mo>=</mo>
+								<mfrac>
+									<mfrac>
+										<mi>aRC</mi>
+										<mi>PA</mi>
+									</mfrac>
+									<msub>
+										<mrow>
+											<mo fence="true" largeop="true" stretchy="true" form="prefix">(</mo>
+											<mfrac>
+												<mi>aRC</mi>
+												<mi>PA</mi>
+											</mfrac>
+											<mo fence="true" stretchy="true" form="postfix">)</mo>
+										</mrow>
+										<mi>lg</mi>
+									</mrow>
+								</mfrac>
+								<mo>·</mo>
+								<mn>100</mn>
+							</mrow>
+						</math>
+					</p>
+				</div>
+			</div>
+		</div>
+
+  </body>
+</html>
+
+
