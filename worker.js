@@ -54,6 +54,7 @@
 			sqlite3.capi.SQLITE_DESERIALIZE_FREEONCLOSE
 		);
 		db.checkRc(rc);
+		debugger;
 		oo.OpfsDb.importDb("dartball.sqlite3", arrayBuffer);
 
 		log("sqlite3 version",capi.sqlite3_libversion(), capi.sqlite3_sourceid());
