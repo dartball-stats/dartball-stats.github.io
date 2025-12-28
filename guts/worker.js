@@ -13,49 +13,48 @@
 			payload:{arg}
 		});/* }}} */
 	};
-
   const log = (...args)=>logHtml('',...args);
   const warn = (...args)=>logHtml('warning',...args);
   const error = (...args)=>logHtml('error',...args);
 
+	sql2objArr = function(query,db) {
+		let output = [];/* {{{ */
+		try {
+	    db.exec({
+	      sql: query,
+	      rowMode: 'object', // 'array' (default), 'object', or 'stmt'
+				resultRows: output,
+	    });
+			return output;
+		} catch(e) {
+			error(e);
+		};/* }}} */
+	};
+
 	importScripts('/jswasm/sqlite3.js');
 	importScripts('/js/crypto.js');
-
+	
 	const main = async function(sqlite3,password) {
 /* {{{ */
+		const urlParams = new URL(globalThis.location.href).searchParams;
 		const capi = sqlite3.capi/*C-style API*/;
 		const oo = sqlite3.oo1/*high-level OO API*/;
 		const arrayBuffer = await fetch('/db/dartball.crypt')
 			.then(r => r.arrayBuffer())
 			.then(r => decrypt(r,password));
-//		const arrayBuffer = fetch('dartball.sqlite3').then(res => res.arrayBuffer());
-
-		sql2objArr = function(query,db) {
-			let output = [];/* {{{ */
-			try {
-		    db.exec({
-		      sql: query,
-		      rowMode: 'object', // 'array' (default), 'object', or 'stmt'
-					resultRows: output,
-		    });
-				return output;
-			} catch(e) {
-				error(e);
-			};/* }}} */
-		};
 
 		// assuming arrayBuffer contains the result of the above operation...
 		const p = sqlite3.wasm.allocFromTypedArray(arrayBuffer);
-		const db = new oo.DB();
+		const poolUtil = await sqlite3.installOpfsSAHPoolVfs();
+		poolUtil.importDb("/dartball.sqlite3",arrayBuffer);
+		const db = new poolUtil.OpfsSAHPoolDb("/dartball.sqlite3");
 		const rc = capi.sqlite3_deserialize(
 			db.pointer, 'main', p, arrayBuffer.byteLength, arrayBuffer.byteLength,
 			sqlite3.capi.SQLITE_DESERIALIZE_FREEONCLOSE
 		);
 		db.checkRc(rc);
-		oo.OpfsDb.importDb("dartball.sqlite3", arrayBuffer);
 
 		log("sqlite3 version",capi.sqlite3_libversion(), capi.sqlite3_sourceid());
-		log((oo.OpfsDb) ? 'Opfs available' : 'Opfs NOT available');
 		log("database bytelength = ",arrayBuffer.byteLength);
    	log("transient db =",db.filename);
 		
@@ -90,6 +89,8 @@
 			}/* }}} */
 		}	finally {
 			db.close();
+			poolUtil.removeVfs();
+			poolUtil.wipeFiles();
 		}
 /* }}} */
 	};

@@ -50,11 +50,6 @@
 		const poolUtil = await sqlite3.installOpfsSAHPoolVfs();
 		poolUtil.importDb("/dartball.sqlite3",arrayBuffer);
 		const db = new poolUtil.OpfsSAHPoolDb("/dartball.sqlite3");
-//		const db = await sqlite3.installOpfsSAHPoolVfs()
-//			.then((poolUtil) => {
-//					poolUtil.importDb("/dartball.sqlite3",arrayBuffer);
-//					return new poolUtil.OpfsSAHPoolDb("/dartball.sqlite3");
-//			});
 		const rc = capi.sqlite3_deserialize(
 			db.pointer, 'main', p, arrayBuffer.byteLength, arrayBuffer.byteLength,
 			sqlite3.capi.SQLITE_DESERIALIZE_FREEONCLOSE
@@ -62,12 +57,8 @@
 		db.checkRc(rc);
 
 		log("sqlite3 version",capi.sqlite3_libversion(), capi.sqlite3_sourceid());
-		log((oo.OpfsDb) ? 'Opfs available' : 'Opfs NOT available');
 		log("database bytelength = ",arrayBuffer.byteLength);
    	log("transient db =",db.filename);
-
-//		oo.OpfsDb.importDb("dartball.sqlite3", arrayBuffer);
-
 		
 		try {
 			//  query database{{{
