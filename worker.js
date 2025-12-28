@@ -47,12 +47,14 @@
 
 		// assuming arrayBuffer contains the result of the above operation...
 		const p = sqlite3.wasm.allocFromTypedArray(arrayBuffer);
-//		const db = new oo.DB();
-		const db = await sqlite3.installOpfsSAHPoolVfs()
-			.then((poolUtil) => {
-					poolUtil.importDb("/dartball.sqlite3",arrayBuffer);
-					return new poolUtil.OpfsSAHPoolDb("/dartball.sqlite3");
-			});
+		const poolUtil = await sqlite3.installOpfsSAHPoolVfs();
+		poolUtil.importDb("/dartball.sqlite3",arrayBuffer);
+		const db = new poolUtil.OpfsSAHPoolDb("/dartball.sqlite3");
+//		const db = await sqlite3.installOpfsSAHPoolVfs()
+//			.then((poolUtil) => {
+//					poolUtil.importDb("/dartball.sqlite3",arrayBuffer);
+//					return new poolUtil.OpfsSAHPoolDb("/dartball.sqlite3");
+//			});
 		const rc = capi.sqlite3_deserialize(
 			db.pointer, 'main', p, arrayBuffer.byteLength, arrayBuffer.byteLength,
 			sqlite3.capi.SQLITE_DESERIALIZE_FREEONCLOSE
@@ -219,6 +221,7 @@
 			}/* }}} */
 		} finally {
 			db.close();
+			poolUtil.wipeFiles();
 		}
 /* }}} */
 	};

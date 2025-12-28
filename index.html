@@ -51,7 +51,7 @@
 					.find((row) => row.startsWith("password="))
 					?.split("=")[1];
 				if (typeof password === 'undefined') {
-					password = prompt("Enter passphrase","passphrase");
+					password = prompt("Enter passphrase","");
 					document.cookie = "password=" + password;
 				}
 				w.postMessage({password: password});
