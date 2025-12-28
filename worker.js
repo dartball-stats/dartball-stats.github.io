@@ -221,7 +221,7 @@
 			}/* }}} */
 		} finally {
 			db.close();
-			poolUtil.wipeFiles();
+			poolUtil.removeVfs();
 		}
 /* }}} */
 	};
