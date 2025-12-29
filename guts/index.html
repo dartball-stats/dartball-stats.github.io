@@ -30,8 +30,6 @@
 		<!-- /CSS -->
 
 		<!-- JS -->
-		<script src="/js/br.js"></script>
-	<!--	<script src="js/sr-min.js"></script>-->
 		<script src="/js/tables.js"></script>
     <script>
 			(function(){
@@ -65,7 +63,7 @@
 							break;
 						case 'linearWeights':
 							linearWeights = data.payload.arg;
-							dartball.printTeamSchedule(linearWeights);
+							dartball.printTeamSchedule(linearWeights,undefined,"table_weights");
 							break;
 						default:
 							logHtml('error',"Unhandled message:",data.type);
@@ -74,6 +72,8 @@
 				}
 			})();
 		</script>
+		<script src="/js/br.js"></script>
+		<!--<script src="/js/sr-min.js"></script>-->
 		<!-- /JS -->
   </head>
   <body class="br">
@@ -210,6 +210,24 @@
 								</mfrac>
 								<mo>·</mo>
 								<mn>100</mn>
+							</mrow>
+						</math>
+					</p>
+					<p>
+						<math display="block">
+							<mrow>
+								<mo>∑</mo>
+									<mo fence="true" largeop="true" stretchy="true" form="prefix">(</mo>
+										<msub>
+											<mi>w</mi>
+											<mi>base</mi>
+										</msub>
+										<mo>·</mo>
+										<msub>
+											<mi>H</mi>
+											<mi>base</mi>
+										</msub>
+									<mo fence="true" largeop="true" stretchy="true" form="postfix">)</mo>
 							</mrow>
 						</math>
 					</p>

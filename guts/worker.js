@@ -54,7 +54,7 @@
 		);
 		db.checkRc(rc);
 
-		log("sqlite3 version",capi.sqlite3_libversion(), capi.sqlite3_sourceid());
+		log("sqlite3 version",capi.sqlite3_libversion());
 		log("database bytelength = ",arrayBuffer.byteLength);
    	log("transient db =",db.filename);
 		

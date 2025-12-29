@@ -114,12 +114,21 @@ table.sortable th:not([aria-sort]) button:hover span::after {
 }
 
 #table_player_stats td:nth-child(2),
-#table_player_stats th:nth-child(2) {
+#table_player_stats th:nth-child(2),
+#table_schedule td:nth-child(2),
+#table_schedule th:nth-child(2), 
+#table_weights td:nth-child(1),
+#table_weights th:nth-child(1), 
+#table_player_gamelog td:nth-child(3),
+#table_player_gamelog th:nth-child(3) {
 	left: 0px;
 	position: sticky;
 	z-index: 1;
 }
 
-#table_player_stats td:nth-child(2) {
+#table_player_stats td:nth-child(2),
+#table_schedule td:nth-child(2),
+#table_weights td:nth-child(1),
+#table_player_gamelog td:nth-child(3) {
 	background-color: #FFFFFF;
 }

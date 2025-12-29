@@ -1,6 +1,6 @@
 "use strict";
 class dartball {
-	static	printTeamSchedule(schedule,teamSummary) {
+	static	printTeamSchedule(schedule,teamSummary,tableId) {
 		/* {{{ */
 		if ((teamSummary) && Array.isArray(teamSummary)) {
 			teamSummary = teamSummary[0];
@@ -11,7 +11,7 @@ class dartball {
 		const div = document.getElementById("div_team_schedule");
 		const table = document.createElement("table");
 		div.appendChild(table);
-		table.setAttribute("id","table_schedule");
+		table.setAttribute("id",(tableId ?? "table_schedule"));
 		table.setAttribute("class","sortable stats_table");
 	
 		/* caption */
@@ -66,13 +66,16 @@ class dartball {
 		});
 
 		/* tfoot */
-		let tfoot = table.createTFoot();
-		tr = tfoot.insertRow();
-		for (const key in schedule[0]) {
-			if (noPrint.includes(key)) {continue;};
-		//	if (key === 'l') {continue;};
-			let th = this.createTHfoot(key,teamSummary);
-			tr.appendChild(th);
+		if (typeof teamSummary !== 'undefined') {
+			debugger;
+			let tfoot = table.createTFoot();
+			tr = tfoot.insertRow();
+			for (const key in schedule[0]) {
+				if (noPrint.includes(key)) {continue;};
+			//	if (key === 'l') {continue;};
+				let th = this.createTHfoot(key,teamSummary);
+				tr.appendChild(th);
+			}
 		}
 		
 		/* fill colgroup */
