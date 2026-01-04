@@ -205,8 +205,7 @@
 			/* }}} */
 		} catch(e) {
 			if(e instanceof sqlite3.SQLite3Error){/* {{{ */
-				log("Got expected exception from nested db.savepoint():",e.message);
-				log("count(*) from t =",db.selectValue("select count(*) from t"));
+				error("SQLite3Error:",e.message);
 			}else{
 				throw e;
 			}/* }}} */
