@@ -50,10 +50,10 @@
 					.find((row) => row.startsWith("password="))
 					?.split("=")[1];
 				if (typeof password === 'undefined') {
-					password = prompt("Enter passphrase","");
+					password = encodeURIComponent(prompt("Enter passphrase",""));
 				}
-				document.cookie = "password=" + password +";max-age=34560000";
-				w.postMessage({password: password});
+				document.cookie = "password=" + password +";max-age=34560000;path=/";
+				w.postMessage({password: decodeURIComponent(password)});
 
 				let teamSummary;
 				let playerStats;
