@@ -1,0 +1,101 @@
+<html>
+	<head>
+		<title>Glossary</title>
+		<!-- CSS -->
+		<link rel="stylesheet" href="/css/sortable-table.css" type="text/css">
+		<link rel="stylesheet" href="/css/br.css" type="text/css">
+		<link rel="stylesheet" href="/css/sr-min-mod.css" type="text/css">
+		<style> #info {min-height:0;} </style>
+		<!-- /CSS -->
+
+	</head>
+	<body>
+	<!--
+		<div id="modal-container" style="visibility: visible; width: auto; height: auto; max-width: 94%; top: 249.5px; left: 273.5px;">
+			<div id="modal-header" style="cursor: move;">
+				<div id="modal-close" class="closer" aria-label="Close in-page popup window">
+				</div>
+			</div>
+			<div id="modal-content">
+				<div id="sr_glossary" class="has_overflow">
+	-->
+		<div id="wrap">
+				<div id="info" class="teams">
+					<div id="meta">
+						<div data-template="Partials/Teams/Summary">
+							<h1>Glossary</h1>
+						</div>
+					</div>
+				</div>
+			<div id="content">
+				<div id="sr_glossary">
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">G</span> -- <span class="glossary_desc"><strong>Games Played</strong></span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">PA</span> -- <span class="glossary_desc"><strong>Plate Appearances</strong>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">AB</span> -- <span class="glossary_desc"><strong>At Bats</strong><br>PA - E - BB</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">H</span> -- <span class="glossary_desc"><strong>Hits</strong><br>1B + 2B + 3B + HR</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">3B</span> -- <span class="glossary_desc"><strong>Triples</strong></span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">EBB</span> -- <span class="glossary_desc"><strong>Errors + Walks</strong></span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">R</span> -- <span class="glossary_desc"><strong>Runs Scored</strong></span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">RBI</span> -- <span class="glossary_desc"><strong>Runs Batted In</strong></span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">AVG</span> -- <span class="glossary_desc"><strong>Batting Average</strong><br>Hits/At Bats<br>Leaders need 3.1 PA per team game played.</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">OBP</span> -- <span class="glossary_desc"><strong>On-base Percentage</strong><br>(H + E + BB)/PA<br>Leaders need 3.1 PA per team game played.</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">SLG</span> -- <span class="glossary_desc"><strong>Slugging Percentage</strong><br>(1B + 2*2B + 3*3B + 4*HR)/AB<br>Leaders need 3.1 PA per team game played.</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">OPS</span> -- <span class="glossary_desc"><strong>On-base Plus Slugging Percentage</strong><br>OBP + SLG<br>Leaders need 3.1 PA per team game played.</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">wOBA</span> -- <span class="glossary_desc"><strong><a href="https://library.fangraphs.com/offense/woba/" target="_blank">Weighted On-base Average</a></strong><br>(w1B*1B + w2B*2B + w3B*3B + wHR*HR + wEBB*EBB)/PA<br>The weights (listed <a href="/guts/" target="_blank">here</a>) are trained on game logs from 2022/23 to present.</span><br>Leaders need 3.1 PA per team game played.</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">aOBP</span> -- <span class="glossary_desc"><strong>Adjusted On-base Percentage</strong><br>(w1B*1B + w2B*2B + w3B*3B + wHR*HR + wEBB*EBB)/PA<br>aOBP/aRC/aRC+ are comparable to wOBA/wRC/wRC+, respectively, but satisfy a different objective function: whereas wRC is trained to estimate <strong>runs scored</strong> from team stat totals, aOBP is trained to estimate <strong>On-base Percentage</strong> from inferred individual base target volume. A core assumption of conventional linear weights methodology is that 'things' happen more-or-less randomly. In dartball, this is demonstrably false: bases are chosen, e.g. triples are typically only attempted with runners on base, and their success/failure has a disproportionate impact on game outcomes. This causes several problems when using wOBA to assess player skill: 1) wRC over-values triples and errors relative to singles. 2) wRC under-penalizes outs when attempting triples (this could be resolved by separating single and triple outs in the stat-sheet, but multiple 'out states' creates ambiguity in defining wOBA). Consequently, a player's wOBA is heavily influenced by his role/position in the batting order, i.e. the same player will tend to have a higher wOBA when slugging vs. batting lead-off. 3) The computed wRC/wOBA weights are heavily influenced by team strategy (intentionally loading bases or attempting doubles will result in very different calculated weights than a 'traditional' strategy). aOBP circumvents all of these issues by ignoring runs entirely. It is instead optimized as a target-neutral skill estimate, i.e. a player's aOBP should tend toward the same value, regardless of the base attempted, and his expected single or triple OBP can be estimated by dividing his aOBP by the respective base weight. The weights (listed <a href="/guts/" target="_blank">here</a>) are trained on game logs from 2022/23 to present.<br>Leaders need 3.1 PA per team game played.</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">OPS+</span> -- <span class="glossary_desc"><strong>OPS+</strong><br>100*[OBP/lg OBP + SLG/lg SLG - 1]<br>Leaders need 3.1 PA per team game played.</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">wRC+</span> -- <span class="glossary_desc"><strong><a href="https://library.fangraphs.com/offense/wrc/" target="_blank">Weighted Runs Created Plus</a></strong><br>100*[(wRC/PA)/(lg wRC/PA)]<br>Leaders need 3.1 PA per team game played.</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">aRC+</span> -- <span class="glossary_desc"><strong>Adjusted Runs Created Plus</strong><br>100*[(aRC/PA)/(lg aRC/PA)]<br>See notes under <strong>aOBP</strong>.<br>Leaders need 3.1 PA per team game played.</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">wRC</span> -- <span class="glossary_desc"><strong><a href="https://library.fangraphs.com/offense/wrc/" target="_blank">Weighted Runs Created</a></strong><br>[(wOBA - lg wOBA)/(wOBA scale) + (lg wRC/PA)]*PA</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">aRC</span> -- <span class="glossary_desc"><strong>Adjusted Runs Created</strong><br>[(aOBA - lg aOBA)/(aOBA scale) + (lg aRC/PA)]*PA<br>See notes under <strong>aOBP</strong>. aRC is to aOBP as wRC is to wOBA. After aOBP weights are calculated, the parameters needed to calculate aRC are solved for by regressing aOBP against runs scored. While wRC is slightly better than aRC at estimating game runs scored, aRC is better at assigning credit for those runs to players, and less biased.</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">gaRC</span> -- <span class="glossary_desc"><strong>Game-standardized Adjusted Runs Created.</strong><br>(aRC/PA)*(lg PA/G)*G<br>A counting statistic that allows for fairer comparison between players with discrepant PA/G. In principle, it should eliminate all factors outside of player control.</span>
+					</div>
+					<div class="glossary_entry no_over">
+						<span class="glossary_title bold_text">Luck</span> -- <span class="glossary_desc"><strong>Luck</strong><br>Difference between team runs scored and team wRC.</span>
+					</div>
+				</div>
+			</div>
+			<div id="modal-loading">
+			</div>
+		</div>
+	</body>
+</html>
