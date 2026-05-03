@@ -97,7 +97,98 @@
 				</div>
 				<div id="math">
 					<p>
-						<math display="block">
+						<math display="inline">
+							<mrow>
+								<mi>wOBA</mi>
+								<mo>=</mo>
+								<mfrac>
+									<mrow>
+											<mo>∑</mo>
+											<mo fence="true" largeop="true" stretchy="true" form="prefix">(</mo>
+												<msub>
+													<mi>w</mi>
+													<mi>base</mi>
+												</msub>
+												<mo>·</mo>
+												<msub>
+													<mi>H</mi>
+													<mi>base</mi>
+												</msub>
+											<mo fence="true" largeop="true" stretchy="true" form="postfix">)</mo>
+									</mrow>
+									<mi>PA</mi>
+								</mfrac>
+							</mrow>
+						</math>
+					</p>
+					<p>
+						<math display="inline">
+							<mrow>
+								<mi>wRC</mi>
+								<mo>=</mo>
+								<mo fence="true" largeop="true" stretchy="true" form="prefix">(</mo>
+									<mfrac>
+										<mrow>
+											<mi>wOBA</mi>
+											<mo>-</mo>
+											<msub>
+												<mi>wOBA</mi>
+												<mi>lg</mi>
+											</msub>
+										</mrow>
+										<mrow>
+											<mi>wOBA Scale</mi>
+										</mrow>
+									</mfrac>
+									<mo>+</mo>
+									<msub>
+										<mrow>
+											<mo>(</mo>
+											<mfrac>
+												<mi>wRC</mi>
+												<mi>PA</mi>
+											</mfrac>
+											<mo>)</mo>
+										</mrow>
+										<mrow>
+											<mi>lg</mi>
+										</mrow>
+									</msub>
+								<mo fence="true" stretchy="true" form="postfix">)</mo>
+								<mo>·</mo>
+								<mi>PA</mi>
+							</mrow>
+						</math>
+					</p>
+					<p>
+						<math display="inline">
+							<mrow>
+								<mi>wRC+</mi>
+								<mo>=</mo>
+								<mfrac>
+									<mfrac>
+										<mi>wRC</mi>
+										<mi>PA</mi>
+									</mfrac>
+									<msub>
+										<mrow>
+											<mo fence="true" largeop="true" stretchy="true" form="prefix">(</mo>
+											<mfrac>
+												<mi>wRC</mi>
+												<mi>PA</mi>
+											</mfrac>
+											<mo fence="true" stretchy="true" form="postfix">)</mo>
+										</mrow>
+										<mi>lg</mi>
+									</msub>
+								</mfrac>
+								<mo>·</mo>
+								<mn>100</mn>
+							</mrow>
+						</math>
+					</p>
+					<p>
+						<math display="inline">
 							<mrow>
 								<mi>aOBP</mi>
 								<mo>=</mo>
@@ -122,7 +213,7 @@
 						</math>
 					</p>
 					<p>
-						<math display="block">
+						<math display="inline">
 							<mrow>
 								<mi>aRC</mi>
 								<mo>=</mo>
@@ -161,33 +252,7 @@
 						</math>
 					</p>
 					<p>
-						<math display="block">
-							<mrow>
-								<mi>gaRC</mi>
-								<mo>=</mo>
-								<mfrac>
-									<mi>aRC</mi>
-									<mi>PA</mi>
-								</mfrac>
-								<mo>·</mo>
-								<msub>
-									<mrow>
-										<mo fence="true" largeop="true" stretchy="true" form="prefix">(</mo>
-										<mfrac>
-											<mi>PA</mi>
-											<mi>G</mi>
-										</mfrac>
-										<mo fence="true" stretchy="true" form="postfix">)</mo>
-									</mrow>
-									<mi>lg</mi>
-								</msub>
-								<mo>·</mo>
-								<mi>G</mi>
-							</mrow>
-						</math>
-					</p>
-					<p>
-						<math display="block">
+						<math display="inline">
 							<mrow>
 								<mi>aRC+</mi>
 								<mo>=</mo>
@@ -210,6 +275,32 @@
 								</mfrac>
 								<mo>·</mo>
 								<mn>100</mn>
+							</mrow>
+						</math>
+					</p>
+					<p>
+						<math display="inline">
+							<mrow>
+								<mi>gaRC</mi>
+								<mo>=</mo>
+								<mfrac>
+									<mi>aRC</mi>
+									<mi>PA</mi>
+								</mfrac>
+								<mo>·</mo>
+								<msub>
+									<mrow>
+										<mo fence="true" largeop="true" stretchy="true" form="prefix">(</mo>
+										<mfrac>
+											<mi>PA</mi>
+											<mi>G</mi>
+										</mfrac>
+										<mo fence="true" stretchy="true" form="postfix">)</mo>
+									</mrow>
+									<mi>lg</mi>
+								</msub>
+								<mo>·</mo>
+								<mi>G</mi>
 							</mrow>
 						</math>
 					</p>

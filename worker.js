@@ -144,10 +144,159 @@
 				+', tm_short'
 				+', id_season'
 				+', id_team'
-				+' FROM team_summary_stats_all_disp'
-				+' WHERE id_team = '+ id_team +' AND id_season = '+ id_season;/* }}} */
+				+' FROM team_summary_stats_disp'
+				+' WHERE id_team = '+ id_team 
+				+' AND id_season = '+ id_season 
+				+' AND tf_post = 0';/* }}} */
 			let teamSummary = sql2objArr(query,db)[0];
 			postData('teamSummary',teamSummary);
+	
+			query = 'SELECT team_g'
+				+', wins as w'
+				+', losses as l'/* {{{ */
+				+', win_pct'
+				+', runs'
+				+', r_per_g'
+				+', wrc'
+				+', (runs - wrc) as luck'
+				+', pa'
+				+', ab'
+				+', h'
+				//+', h1'
+				+', h3'
+				+', e'
+				+', avg'
+				+', obp'
+				+', slg'
+				+', ops'
+				+', ops_plus'
+				+', woba'
+				+', wrc_plus'
+				+', aobp'
+				+', xrc_plus AS arc_plus'
+				+', xrc AS arc'
+				+', gxrc AS garc'
+				+', r'
+				+', rbi'
+				+', player_g as g'
+				+', season'
+				+', tm_long'
+				+', tm_short'
+				+', id_season'
+				+', id_team'
+				+' FROM team_summary_stats_disp'
+				+' WHERE id_team = '+ id_team 
+				+' AND id_season = '+ id_season 
+				+' AND tf_post = 1';/* }}} */
+			let teamSummaryPost = sql2objArr(query,db)[0];
+			postData('teamSummaryPost',teamSummaryPost);
+
+			query = 'SELECT team_g'
+				+', wins as w'
+				+', losses as l'/* {{{ */
+				+', win_pct'
+				+', runs'
+				+', r_per_g'
+				+', wrc'
+				+', (runs - wrc) as luck'
+				+', pa'
+				+', ab'
+				+', h'
+				//+', h1'
+				+', h3'
+				+', e'
+				+', avg'
+				+', obp'
+				+', slg'
+				+', ops'
+				+', ops_plus'
+				+', woba'
+				+', wrc_plus'
+				+', aobp'
+				+', xrc_plus AS arc_plus'
+				+', xrc AS arc'
+				+', gxrc AS garc'
+				+', r'
+				+', rbi'
+				+', player_g as g'
+				+', season'
+				+', tm_long'
+				+', tm_short'
+				+', id_season'
+				+', id_team'
+				+' FROM team_summary_stats_all_disp'
+				+' WHERE id_team = '+ id_team +' AND id_season = '+ id_season;/* }}} */
+			let teamSummaryAll = sql2objArr(query,db)[0];
+			postData('teamSummaryAll',teamSummaryAll);
+
+			query = 'SELECT name'
+				+', tm_short as team'/* {{{ */
+				+', g'
+				+', pa'
+				+', ab'
+				+', h'
+				//+', h1'
+				+', h3'
+				+', e'
+				+', r'
+				+', rbi'
+				+', avg'
+				+', obp'
+				+', slg'
+				+', ops'
+				+', woba'
+				+', aobp'
+				+', ops_plus'
+				+', wrc_plus'
+				+', xrc_plus AS arc_plus'
+				+', wrc'
+				+', xrc AS arc'
+				+', gxrc AS garc'
+				+', id_player'
+				+', id_team'
+				+', id_season'
+				+' FROM player_stats_rate_disp psr'
+				+' WHERE id_season = '+ id_season
+				+' AND id_team = ' + id_team
+				+' AND tf_post = 0'
+				+' ORDER BY xrc DESC';/* }}} */
+			let playerStatsResult = sql2objArr(query,db);
+			postData('playerStatsSummary',playerStatsResult);
+			//console.log('playerStatsSummary =',playerStatsResult);
+
+			query = 'SELECT name'
+				+', tm_short as team'/* {{{ */
+				+', g'
+				+', pa'
+				+', ab'
+				+', h'
+				//+', h1'
+				+', h3'
+				+', e'
+				+', r'
+				+', rbi'
+				+', avg'
+				+', obp'
+				+', slg'
+				+', ops'
+				+', woba'
+				+', aobp'
+				+', ops_plus'
+				+', wrc_plus'
+				+', xrc_plus AS arc_plus'
+				+', wrc'
+				+', xrc AS arc'
+				+', gxrc AS garc'
+				+', id_player'
+				+', id_team'
+				+', id_season'
+				+' FROM player_stats_rate_disp psr'
+				+' WHERE id_season = '+ id_season
+				+' AND id_team = ' + id_team
+				+' AND tf_post = 1'
+				+' ORDER BY xrc DESC';/* }}} */
+			let playerStatsResultPost = sql2objArr(query,db);
+			postData('playerStatsSummaryPost',playerStatsResultPost);
 	
 			query = 'SELECT name'
 				+', tm_short as team'/* {{{ */
@@ -179,10 +328,67 @@
 				+' WHERE id_season = '+ id_season
 				+' AND id_team = ' + id_team
 				+' ORDER BY xrc DESC';/* }}} */
-			let playerStatsResult = sql2objArr(query,db);
-			postData('playerStatsSummary',playerStatsResult);
-			//console.log('playerStatsSummary =',playerStatsResult);
+			let playerStatsResultAll = sql2objArr(query,db);
+			postData('playerStatsSummaryAll',playerStatsResultAll);
 	
+			query = 'SELECT MAX(wrc) AS wrc'
+		//		+', MAX(gwrc) as gwrc'{{{
+				+', MAX(xrc) AS arc'
+				+', MAX(gxrc) AS garc'
+				+', MAX(g) AS g'
+				+', MAX(pa) AS pa'
+				+', MAX(ab) AS ab'
+				+', MAX(h) AS h'
+				//+', MAX(h1) AS h1'
+				+', MAX(h3) AS h3'
+				+', MAX(e) AS e'
+				+', MAX(r) AS r'
+				+', MAX(rbi) AS rbi'
+				+', MAX(avg) AS avg'
+				+', MAX(obp) AS obp'
+				+', MAX(slg) AS slg'
+				+', MAX(ops) AS ops'
+				+', MAX(woba) AS woba'
+				+', MAX(aobp) AS aobp'
+				+', MAX(ops_plus) AS ops_plus'
+				+', MAX(wrc_plus) AS wrc_plus'
+				+', MAX(xrc_plus) AS arc_plus'
+				+' FROM player_stats_rate'
+				+' WHERE id_season = ' + id_season
+				+' AND id_team = ' + id_team
+				+' AND tf_post = 0';/* }}} */
+			let playerStatsMax = (sql2objArr(query,db))[0];
+			postData('playerStatsSummaryMax',playerStatsMax);
+			
+			query = 'SELECT MAX(wrc) AS wrc'
+		//		+', MAX(gwrc) as gwrc'{{{
+				+', MAX(xrc) AS arc'
+				+', MAX(gxrc) AS garc'
+				+', MAX(g) AS g'
+				+', MAX(pa) AS pa'
+				+', MAX(ab) AS ab'
+				+', MAX(h) AS h'
+				//+', MAX(h1) AS h1'
+				+', MAX(h3) AS h3'
+				+', MAX(e) AS e'
+				+', MAX(r) AS r'
+				+', MAX(rbi) AS rbi'
+				+', MAX(avg) AS avg'
+				+', MAX(obp) AS obp'
+				+', MAX(slg) AS slg'
+				+', MAX(ops) AS ops'
+				+', MAX(woba) AS woba'
+				+', MAX(aobp) AS aobp'
+				+', MAX(ops_plus) AS ops_plus'
+				+', MAX(wrc_plus) AS wrc_plus'
+				+', MAX(xrc_plus) AS arc_plus'
+				+' FROM player_stats_rate'
+				+' WHERE id_season = ' + id_season
+				+' AND id_team = ' + id_team
+				+' AND tf_post = 1';/* }}} */
+			let playerStatsMaxPost = (sql2objArr(query,db))[0];
+			postData('playerStatsSummaryMaxPost',playerStatsMaxPost);
+
 			query = 'SELECT MAX(wrc) AS wrc'
 		//		+', MAX(gwrc) as gwrc'{{{
 				+', MAX(xrc) AS arc'
@@ -208,10 +414,9 @@
 				+' FROM player_stats_rate_all'
 				+' WHERE id_season = ' + id_season
 				+' AND id_team = ' + id_team;/* }}} */
+			let playerStatsMaxAll = (sql2objArr(query,db))[0];
+			postData('playerStatsSummaryMaxAll',playerStatsMaxAll);
 
-			let playerStatsMax = (sql2objArr(query,db))[0];
-			postData('playerStatsSummaryMax',playerStatsMax);
-			
 		} catch(e) {
 			/* {{{ */
 			if(e instanceof sqlite3.SQLite3Error){

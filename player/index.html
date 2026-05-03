@@ -56,7 +56,11 @@
 
 				let schedule;
 				let playerSeasonStats;
+				let playerSeasonStatsPost;
+				let playerSeasonStatsAll;
 				let playerCareerStats;
+				let playerCareerStatsPost;
+				let playerCareerStatsAll;
 	      w.onmessage = function({data}){
 	        switch(data.type){
 						case 'log':
@@ -70,17 +74,30 @@
 						case 'playerSeasonStats':
 							playerSeasonStats = data.payload.arg;
 							break;
+						case 'playerSeasonStatsPost':
+							playerSeasonStatsPost = data.payload.arg;
+							break;
+						case 'playerSeasonStatsAll':
+							playerSeasonStatsAll = data.payload.arg;
+							break;
 						case 'playerCareerStats':
-							/* last object returned by worker */
 							playerCareerStats = data.payload.arg;
+							break;
+						case 'playerCareerStatsPost':
+							playerCareerStatsPost = data.payload.arg;
+							break;
+						case 'playerCareerStatsAll':
+							playerCareerStatsAll = data.payload.arg;
 
+							/* last object returned by worker */
 							dartball.printPlayerInfo(playerCareerStats);
-							dartball.printTeamSchedule(schedule,playerCareerStats,"table_player_gamelog");
+							dartball.printTeamSchedule(schedule,playerCareerStatsAll,"table_player_gamelog");
 							dartball.printPlayerStats(playerSeasonStats,playerCareerStats);
+							dartball.printPlayerStats(playerSeasonStatsPost,playerCareerStatsPost,undefined,"div_players_stats_post");
+							dartball.printPlayerStats(playerSeasonStatsAll,playerCareerStatsAll,undefined,"div_players_stats_all");
 							break;
 						default:
 							logHtml('error',"Unhandled message:",data.type);
-						
 					};
 				}
 			})();
@@ -99,7 +116,7 @@
 				</div>
 			</div>
 			<div id="content" role="main">
-				<div id="player_stats" class="table_wrapper">
+				<div id="player_stats" class="table_wrapper tabbed">
 					<div class="section_heading players_standard_batting" id="players_stats_sh">
 			  		<span class="section_anchor" id="players_stats_link" data-label="Player Stats"></span><h2>Season Stats</h2>
 						<div class="section_heading_text sidescroll_note">
@@ -110,7 +127,24 @@
 							</ul>
 						</div>
 			  	</div>
-					<div class="table_container" id="div_players_stats">
+					<div class="filter switcher">
+						<div class="current">
+							<a class="sr_preset" href="javascript:void(0)" data-show="reg_season">Regular Season</a>
+						</div>
+						<div>
+							<a class="sr_preset" href="javascript:void(0)" data-show="post_season">Playoffs</a>
+						</div>
+						<div>
+							<a class="sr_preset" href="javascript:void(0)" data-show="combined">Combined</a>
+						</div>
+					</div>
+					<div id="switcher_players_stats" class="switcher_content">
+						<div class="table_container current" id="div_players_stats" data-show="reg_season">
+						</div>
+						<div class="table_container" id="div_players_stats_post" data-show="post_season">
+						</div>
+						<div class="table_container" id="div_players_stats_all" data-show="combined">
+						</div>
 					</div>
 				</div>
 				<div id="all_team_schedule" class="table_wrapper">

@@ -90,7 +90,7 @@ class dartball {
 		/* }}} */
 	}
 	
-	static printPlayerStats(playerStats,teamSummary,playerStatsMax) {
+	static printPlayerStats(playerStats,teamSummary,playerStatsMax,divName = "div_players_stats") {
 		/* {{{ */
 		if ((playerStatsMax) && Array.isArray(playerStatsMax)) {
 			playerStatsMax = playerStatsMax[0];
@@ -102,7 +102,7 @@ class dartball {
 	
 		const noPrint = ["id_season","id_team","id_player","team_g","id_series"];
 
-		const div = document.getElementById("div_players_stats");
+		const div = document.getElementById(divName);
 		const table = document.createElement("table");
 		div.appendChild(table);
 		table.setAttribute("id","table_player_stats");
@@ -211,15 +211,17 @@ class dartball {
 		const rows_nq = table.querySelectorAll("tbody tr.non_qual");
 		const checkbox = document.getElementById("fs_check_players_standard_batting");
 
-		checkbox.addEventListener('change', function() {
-				/* if query returns node, then table is sorted by rate stat */
-				const hideNonQual = (table.querySelector("thead th.hide_non_quals.sort_col") !== null);
-				if (this.checked && hideNonQual) {
-					rows_nq.forEach( (r) => {r.style.display = "none";});
-				} else {
-					rows_nq.forEach( (r) => {r.style.removeProperty("display");});
-				};
-		});
+		if (checkbox !== null) {
+			checkbox.addEventListener('change', function() {
+					/* if query returns node, then table is sorted by rate stat */
+					const hideNonQual = (table.querySelector("thead th.hide_non_quals.sort_col") !== null);
+					if (this.checked && hideNonQual) {
+						rows_nq.forEach( (r) => {r.style.display = "none";});
+					} else {
+						rows_nq.forEach( (r) => {r.style.removeProperty("display");});
+					};
+			});
+		};
 
 		table.querySelectorAll("thead th").forEach( (th) => {
 				if (th.classList.contains("hide_non_quals")) {
@@ -236,6 +238,20 @@ class dartball {
 					});
 				};
 		});
+
+		/* add switcher event listener */
+		const data_show = div.getAttribute("data-show");
+		if (data_show !== null) {
+			const button = document.querySelector("a[data-show=" + data_show + "]").parentElement;
+			const button_list = button.parentElement.querySelectorAll("div");
+			const div_list = div.parentElement.querySelectorAll("div");
+			button.addEventListener("click", (e) => {
+					button_list.forEach( (r) => {r.classList.remove("current");});
+					button.classList.add("current");
+					div_list.forEach( (r) => {r.classList.remove("current");});
+					div.classList.add("current");
+			});
+		};
 
 	/* }}} */
 	}
