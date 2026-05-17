@@ -86,6 +86,9 @@
 				+', aobp_webb'
 				+', lg_arc_per_pa'
 				+', lg_pa_per_g'
+				+', aobp_threshold'
+				+', w_per_aobp'
+				+', players_per_g'
 				+' FROM linear_weights_disp'
 				+' ORDER BY season ASC';
 			let linearWeights = sql2objArr(query,db);

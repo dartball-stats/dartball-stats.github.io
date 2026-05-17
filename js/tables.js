@@ -506,7 +506,11 @@ class dartball {
 		aobp_w3b: "aOBP w3B",
 		aobp_webb: "aOBp wEBB",
 		lg_arc_per_pa: "lg aRC/PA",
-		lg_pa_per_g: "lg PA/G"
+		lg_pa_per_g: "lg PA/G",
+		aobp_threshold: "Threshold aOBP",
+		w_per_aobp: "Threshold W/aOBP",
+		players_per_g: "lg Players/G",
+		beta_war: "βWAR",
 		/* }}} */
 	};
 	
@@ -570,9 +574,11 @@ class dartball {
 		aobp_w3b: "r",
 		aobp_webb: "r",
 		lg_arc_per_pa: "r",
-		lg_pa_per_g: "r"
-
-
+		lg_pa_per_g: "r",
+		aobp_threshold: "r",
+		w_per_aobp: "r",
+		players_per_g: "r",
+		beta_war: "c"
 		/* }}} */
 	};
 

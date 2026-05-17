@@ -135,7 +135,8 @@
 				+', aobp'
 				+', xrc_plus AS arc_plus'
 				+', xrc AS arc'
-				+', gxrc AS garc'
+				//+', gxrc AS garc'
+				+', beta_war'
 				+', r'
 				+', rbi'
 				+', player_g as g'
@@ -175,7 +176,8 @@
 				+', aobp'
 				+', xrc_plus AS arc_plus'
 				+', xrc AS arc'
-				+', gxrc AS garc'
+				//+', gxrc AS garc'
+				+', beta_war'
 				+', r'
 				+', rbi'
 				+', player_g as g'
@@ -215,7 +217,8 @@
 				+', aobp'
 				+', xrc_plus AS arc_plus'
 				+', xrc AS arc'
-				+', gxrc AS garc'
+				//+', gxrc AS garc'
+				+', beta_war'
 				+', r'
 				+', rbi'
 				+', player_g as g'
@@ -251,7 +254,8 @@
 				+', xrc_plus AS arc_plus'
 				+', wrc'
 				+', xrc AS arc'
-				+', gxrc AS garc'
+				//+', gxrc AS garc'
+				+', beta_war'
 				+', id_player'
 				+', id_team'
 				+', id_season'
@@ -286,7 +290,8 @@
 				+', xrc_plus AS arc_plus'
 				+', wrc'
 				+', xrc AS arc'
-				+', gxrc AS garc'
+				//+', gxrc AS garc'
+				+', beta_war'
 				+', id_player'
 				+', id_team'
 				+', id_season'
@@ -320,7 +325,8 @@
 				+', xrc_plus AS arc_plus'
 				+', wrc'
 				+', xrc AS arc'
-				+', gxrc AS garc'
+				//+', gxrc AS garc'
+				+', beta_war'
 				+', id_player'
 				+', id_team'
 				+', id_season'
@@ -334,7 +340,8 @@
 			query = 'SELECT MAX(wrc) AS wrc'
 		//		+', MAX(gwrc) as gwrc'{{{
 				+', MAX(xrc) AS arc'
-				+', MAX(gxrc) AS garc'
+				//+', MAX(gxrc) AS garc'
+				+', MAX(beta_war) as beta_war'
 				+', MAX(g) AS g'
 				+', MAX(pa) AS pa'
 				+', MAX(ab) AS ab'
@@ -353,7 +360,7 @@
 				+', MAX(ops_plus) AS ops_plus'
 				+', MAX(wrc_plus) AS wrc_plus'
 				+', MAX(xrc_plus) AS arc_plus'
-				+' FROM player_stats_rate'
+				+' FROM player_stats_rate_disp'
 				+' WHERE id_season = ' + id_season
 				+' AND id_team = ' + id_team
 				+' AND tf_post = 0';/* }}} */
@@ -363,7 +370,8 @@
 			query = 'SELECT MAX(wrc) AS wrc'
 		//		+', MAX(gwrc) as gwrc'{{{
 				+', MAX(xrc) AS arc'
-				+', MAX(gxrc) AS garc'
+				//+', MAX(gxrc) AS garc'
+				+', MAX(beta_war) AS beta_war'
 				+', MAX(g) AS g'
 				+', MAX(pa) AS pa'
 				+', MAX(ab) AS ab'
@@ -382,7 +390,7 @@
 				+', MAX(ops_plus) AS ops_plus'
 				+', MAX(wrc_plus) AS wrc_plus'
 				+', MAX(xrc_plus) AS arc_plus'
-				+' FROM player_stats_rate'
+				+' FROM player_stats_rate_disp'
 				+' WHERE id_season = ' + id_season
 				+' AND id_team = ' + id_team
 				+' AND tf_post = 1';/* }}} */
@@ -392,7 +400,8 @@
 			query = 'SELECT MAX(wrc) AS wrc'
 		//		+', MAX(gwrc) as gwrc'{{{
 				+', MAX(xrc) AS arc'
-				+', MAX(gxrc) AS garc'
+				//+', MAX(gxrc) AS garc'
+				+', MAX(beta_war) AS beta_war'
 				+', MAX(g) AS g'
 				+', MAX(pa) AS pa'
 				+', MAX(ab) AS ab'
@@ -411,7 +420,7 @@
 				+', MAX(ops_plus) AS ops_plus'
 				+', MAX(wrc_plus) AS wrc_plus'
 				+', MAX(xrc_plus) AS arc_plus'
-				+' FROM player_stats_rate_all'
+				+' FROM player_stats_rate_all_disp'
 				+' WHERE id_season = ' + id_season
 				+' AND id_team = ' + id_team;/* }}} */
 			let playerStatsMaxAll = (sql2objArr(query,db))[0];
