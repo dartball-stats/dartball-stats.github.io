@@ -133,14 +133,14 @@ class dartball {
 		}
 	
 		/* tbody */
-		const min_pa = teamSummary.team_g * 3.1;
+		//const min_pa = teamSummary.team_g * 3.1;
 		let tbody = table.createTBody();
 		let counter = 0;
 		playerStats.forEach(row => {
 			let tr = tbody.insertRow();
 
 			// for hiding non-qualifiers for rate stats
-			if (row.pa < min_pa) {tr.classList.add("non_qual");};
+			if (row.pa < (3.1*row.team_g)) {tr.classList.add("non_qual");};
 
 
 			// ranker column
@@ -254,6 +254,104 @@ class dartball {
 		};
 
 	/* }}} */
+	}
+
+	static	printLeagueStandings(teamStats,leagueStats,tableId) {
+		/* {{{ */
+		if ((leagueStats) && Array.isArray(leagueStats)) {
+			leagueStats = leagueStats[0];
+		}
+	
+		const noPrint = ["id_season","id_team","l"];
+
+		const div = document.getElementById("div_team_schedule");
+		const table = document.createElement("table");
+		div.appendChild(table);
+		table.setAttribute("id",(tableId ?? "table_standings"));
+		table.setAttribute("class","css-serial sortable stats_table");
+	
+		/* caption */
+		const caption = table.createCaption();
+		caption.textContent = "League Standings";
+	
+		/* colgroup */
+		const colgroup = document.createElement("colgroup");
+		table.appendChild(colgroup);
+
+		/* thead */
+		let thead = table.createTHead();
+		let tr = thead.insertRow();
+
+		let th = document.createElement("th");// ranker column
+		tr.appendChild(th);
+		th.setAttribute("class","center num");
+		th.textContent = "Rk";
+
+		for (const key in teamStats[0]) {
+			if (noPrint.includes(key)) {continue;};
+			let th = this.createTH(key);
+			tr.appendChild(th);
+		}
+	
+		/* tbody */
+		let tbody = table.createTBody();
+		let counter = 0;
+		teamStats.forEach(row => {
+			let tr = tbody.insertRow();
+
+			// ranker column
+			counter++;
+			let td = document.createElement("td");
+			tr.appendChild(td);
+			td.setAttribute("class","right");
+			td.setAttribute("csk",counter);
+
+			for (const key in row) {
+				if (noPrint.includes(key)) {continue;};
+				let td = this.createTD(key,row);
+				if (key === 'team') {
+					let inner = td.innerHTML;
+					td.innerHTML = '';
+					let a = document.createElement("a");
+					td.appendChild(a);
+					a.innerHTML = inner;
+					a.href = "/?t=" + row.id_team + "&y=" + row.id_season;
+				};
+					
+				tr.appendChild(td);
+			}
+		});
+		tbody.addEventListener('click', (event) => {
+				event.target.closest('tr').classList.toggle('rowSum');
+		});
+
+		/* tfoot */
+		if (typeof leagueStats !== 'undefined') {
+			let tfoot = table.createTFoot();
+			tr = tfoot.insertRow();
+
+			// ranker column
+			th = document.createElement("th");
+			tr.appendChild(th);		
+	
+			for (const key in teamStats[0]) {
+				if (noPrint.includes(key)) {continue;};
+				let th = this.createTHfoot(key,leagueStats);
+				tr.appendChild(th);
+			}
+		}
+		
+		/* fill colgroup */
+		let n_cols = tr.cells.length;
+		for (let i = 0; i < n_cols; i++) {
+			let col = document.createElement("col");
+			colgroup.appendChild(col);
+		};
+
+		/* make sortable */
+		new SortableTable(table);
+
+		/* }}} */
 	}
 
 	static printTeamInfo(teamSummary) {
@@ -436,6 +534,97 @@ class dartball {
 /* }}} */
 	}
 
+	static printLeagueInfo(leagueSummary,playoffResults) {
+/* {{{ */
+		if (leagueSummary) {
+			document.title = leagueSummary.season + " League Statistics";
+			const div_info = document.getElementById("info");
+			const h1 = div_info.querySelector("h1");
+	
+			// heading
+			h1.innerHTML = '<span>' + leagueSummary.season + '</span> '
+				+'<span>League</span> '
+				+'<span class="header_end">Statistics</span> ';
+			let div = div_info.querySelector(".prevnext");
+	
+			// prev season button
+			if (leagueSummary.id_season > 1) {
+				let a = div_info.querySelector(".button2.prev");
+				a.href = ".?y=" + (leagueSummary.id_season - 1);
+				a.textContent = (Number(leagueSummary.season) - 1) + " Season";
+			} else {
+				div_info.querySelector(".button2.prev").remove();
+			};
+	
+			// next season button
+			if (leagueSummary.id_season < 4) {
+				let a = div_info.querySelector(".button2.next")
+				a.href = ".?y=" + (leagueSummary.id_season + 1);
+				a.textContent = (Number(leagueSummary.season) + 1) + " Season";
+			} else {
+				div_info.querySelector(".button2.next").remove();
+			};
+
+			// previous/next week schedule
+
+		} else {
+			document.title = "No Data";
+			const div_info = document.getElementById("info");
+			const h1 = div_info.querySelector("h1");
+	
+			// heading
+			h1.innerHTML = 'No Data';
+		}
+
+		if (playoffResults && playoffResults.length > 0) {
+			const div = document.getElementById("div_postseason");
+
+			// table
+			const table = document.createElement("table");
+			div.appendChild(table);
+			table.setAttribute("class","stats_table");
+			const tbody = table.createTBody();
+			playoffResults.forEach(row => {
+					const tr = table.insertRow();
+					let winner;
+					let loser;
+					let w;
+					let l;
+					let id_w;
+					let id_l;
+					if (row.w > row.l) {
+						winner = row.team;
+						loser = row.opp;
+						id_w = row.id_team;
+						id_l = row.id_team_opp;
+						w = row.w;
+						l = row.l;
+					} else {
+						winner = row.opp;
+						loser = row.team;
+						id_w = row.id_team_opp;
+						id_l = row.id_team;
+						w = row.l;
+						l = row.w;
+					}
+					let td = tr.insertCell();
+					td.innerHTML = row.date_series;
+					td = tr.insertCell();
+					td.innerHTML = "<strong><a href=\"/?t="+id_w+"&y="+row.id_season+"\">"+ winner+"</a></strong>" 
+						+ " ("+w+") over " 
+						+ "<a href=\"/?t=" + id_l + "&y=" + row.id_season + "\">" + loser + "</a>" 
+						+ " ("+l+")";
+			});
+
+		} else {
+			const div = document.getElementById("postseason");
+			div.remove();
+		}
+
+
+/* }}} */
+	}
+
 	static printPlayerInfo(playerCareerStats) {
 /* {{{ */
 		if (playerCareerStats) {
@@ -466,8 +655,12 @@ class dartball {
 		opp: "Opp",
 		venue: "Venue",
 		w: "W-L",
+		win_pct: "PCT",
 		r: "R",
-		r_per_g: "R/G",
+		rs: "RS",
+		ra: "RA",
+		r_per_g: "RS/G",
+		ra_per_g: "RA/G",
 		rbi: "RBI",
 		luck: "Luck",
 		g: "G",
@@ -534,7 +727,10 @@ class dartball {
 		venue: "s",
 		w: "wl",
 		r: "i",
+		rs: "i",
+		ra: "i",
 		r_per_g: "r",
+		ra_per_g: "r",
 		rbi: "i",
 		luck: "luck",
 		g: "i",

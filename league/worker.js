@@ -75,56 +75,18 @@
 		
 		try {
 			// query database
-			// team schedule
-			let query = 'SELECT week'
-				+', date_series'/* {{{ */
-				+', ha'
-				+', opp_long AS opp'
-				+', venue'
-				+', w'
-				+', l'
-				+', r'
-				+', wrc'
-				+', luck'
-				+', pa'
-				+', h'
-				//+', h1'
-				+', h3'
-				+', e'
-				+', avg'
-				+', obp'
-				+', slg'
-				+', ops'
-				+', ops_plus'
-				+', woba'
-				+', wrc_plus'
-				+', aobp'
-				+', xrc_plus AS arc_plus'
-				+', xrc AS arc'
-				+', beta_war'
-				+', id_team'
-				+', id_series'
-				+', id_season'
-				+', id_team_opp'
-				+' FROM game_log_team_stats_disp'
-				+' WHERE id_team = '+ id_team + ' AND id_season = '+ id_season
-				+' ORDER BY id_series ASC';/* }}} */
-			let scheduleResult = sql2objArr(query,db);
-			postData('schedule',scheduleResult);
-	
-			// team stat totals
-			query = 'SELECT team_g'
-				+', wins as w'
-				+', losses as l'/* {{{ */
+			// 
+			let query = 'SELECT tm_long as team'
+				+', team_g as g'
+				+', wins as w'/* {{{ */
+				+', losses as l'
 				+', win_pct'
-				+', runs'
+				+', runs as rs'
+				+', runs_against as ra'
 				+', r_per_g'
-				+', wrc'
-				+', (runs - wrc) as luck'
+				+', ra_per_g'
 				+', pa'
-				+', ab'
 				+', h'
-				//+', h1'
 				+', h3'
 				+', e'
 				+', avg'
@@ -134,105 +96,146 @@
 				+', ops_plus'
 				+', woba'
 				+', wrc_plus'
-				+', aobp'
-				+', xrc_plus AS arc_plus'
-				+', xrc AS arc'
-				//+', gxrc AS garc'
-				+', beta_war'
-				+', r'
-				+', rbi'
-				+', player_g as g'
-				+', season'
-				+', tm_long'
-				+', tm_short'
-				+', id_season'
-				+', id_team'
-				+' FROM team_summary_stats_disp'
-				+' WHERE id_team = '+ id_team 
-				+' AND id_season = '+ id_season 
-				+' AND tf_post = 0';/* }}} */
-			let teamSummary = sql2objArr(query,db)[0];
-			postData('teamSummary',teamSummary);
-	
-			query = 'SELECT team_g'
-				+', wins as w'
-				+', losses as l'/* {{{ */
-				+', win_pct'
-				+', runs'
-				+', r_per_g'
 				+', wrc'
-				+', (runs - wrc) as luck'
-				+', pa'
-				+', ab'
-				+', h'
-				//+', h1'
-				+', h3'
-				+', e'
-				+', avg'
-				+', obp'
-				+', slg'
-				+', ops'
-				+', ops_plus'
-				+', woba'
-				+', wrc_plus'
 				+', aobp'
 				+', xrc_plus AS arc_plus'
-				+', xrc AS arc'
-				//+', gxrc AS garc'
+				+', xrc as arc'
 				+', beta_war'
-				+', r'
-				+', rbi'
-				+', player_g as g'
-				+', season'
-				+', tm_long'
-				+', tm_short'
-				+', id_season'
 				+', id_team'
+				+', id_season'
 				+' FROM team_summary_stats_disp'
-				+' WHERE id_team = '+ id_team 
-				+' AND id_season = '+ id_season 
-				+' AND tf_post = 1';/* }}} */
-			let teamSummaryPost = sql2objArr(query,db)[0];
-			postData('teamSummaryPost',teamSummaryPost);
+				+' WHERE id_season = ' + id_season + ' AND tf_post = 0'
+				+' ORDER BY win_pct DESC, r_per_g DESC';/* }}} */
+			let teamStats = sql2objArr(query,db);
+			postData('teamStats',teamStats);
 
-			query = 'SELECT team_g'
-				+', wins as w'
-				+', losses as l'/* {{{ */
-				+', win_pct'
-				+', runs'
-				+', r_per_g'
-				+', wrc'
-				+', (runs - wrc) as luck'
-				+', pa'
-				+', ab'
-				+', h'
-				//+', h1'
-				+', h3'
-				+', e'
-				+', avg'
-				+', obp'
-				+', slg'
-				+', ops'
-				+', ops_plus'
-				+', woba'
-				+', wrc_plus'
-				+', aobp'
-				+', xrc_plus AS arc_plus'
-				+', xrc AS arc'
-				//+', gxrc AS garc'
-				+', beta_war'
-				+', r'
-				+', rbi'
-				+', player_g as g'
-				+', season'
-				+', tm_long'
-				+', tm_short'
+//			query = 'SELECT MAX(wins) AS w'
+//				+', MAX(win_pct) AS win_pct'/* {{{ */
+//				+', MAX(r_per_g) AS r_per_g'
+//				+', MAX(team_g) AS g'
+//				+', MAX(runs) AS r'
+//				+', MAX(pa) AS pa'
+//				+', MAX(h) AS h'
+//				+', MAX(h3) AS h3'
+//				+', MAX(e) AS e'
+//				+', MAX(avg) AS avg'
+//				+', MAX(obp) AS obp'
+//				+', MAX(slg) AS slg'
+//				+', MAX(ops) AS ops'
+//				+', MAX(ops_plus) AS ops_plus'
+//				+', MAX(woba) AS woba'
+//				+', MAX(wrc_plus) AS wrc_plus'
+//				+', MAX(wrc) AS wrc'
+//				+', MAX(aobp) AS aobp'
+//				+', MAX(xrc_plus) AS arc_plus'
+//				+', MAX(xrc) AS arc'
+//				+', MAX(beta_war) AS beta_war'
+//				+' FROM team_summary_stats_disp'
+//				+' WHERE id_season = ' + id_season + ' AND tf_post = 0'/* }}} */
+//			let teamStatsMax = sql2objArr(query,db);
+//			postData('teamStatsMax',teamStatsMax);
+
+			query = 'SELECT season'
+				+', SUM(team_g) AS g'/* {{{ */
+				+', SUM(wins) AS w'
+				+', SUM(losses) AS l'
+				+', SUM(wins)/SUM(wins + losses + 0.0) AS win_pct'
+				+', SUM(runs) AS rs'
+				+', SUM(runs_against) AS ra'
+				+', SUM(r_per_g * team_g) / SUM(r_per_g * team_g / r_per_g) AS r_per_g'
+				+', SUM(ra_per_g * team_g) / SUM(ra_per_g * team_g / ra_per_g) AS ra_per_g'
+				+', SUM(r) AS r'
+				+', SUM(rbi) AS rbi'
+				+', SUM(pa) AS pa'
+				+', SUM(ab) AS ab'
+				+', SUM(h) AS h'
+				+', SUM(h3) AS h3'
+				+', SUM(e) AS e'
+				+', SUM(avg * ab)/SUM(ab) AS avg'
+				+', SUM(obp * pa)/SUM(pa) AS obp'
+				+', SUM(slg*ab)/SUM(ab) AS slg'
+				+', SUM(ops*pa)/SUM(pa) AS ops'
+				+', SUM(ops_plus*pa)/SUM(pa) AS ops_plus'
+				+', SUM(woba*pa)/SUM(pa) AS woba'
+				+', SUM(wrc_plus*pa)/SUM(pa) AS wrc_plus'
+				+', SUM(wrc) AS wrc'
+				+', SUM(aobp*pa)/SUM(pa) AS aobp'
+				+', SUM(xrc_plus*pa)/SUM(pa) AS arc_plus'
+				+', SUM(xrc) AS arc'
+				+', SUM(beta_war) AS beta_war'
 				+', id_season'
-				+', id_team'
-				+' FROM team_summary_stats_all_disp'
-				+' WHERE id_team = '+ id_team +' AND id_season = '+ id_season;/* }}} */
-			let teamSummaryAll = sql2objArr(query,db)[0];
-			postData('teamSummaryAll',teamSummaryAll);
+				+' FROM team_summary_stats_disp'
+				+' WHERE id_season = ' + id_season + ' AND tf_post = 0';/* }}} */
+			let leagueStats = (sql2objArr(query,db))[0];
+			postData('leagueStats',leagueStats);
+
+			query = 'SELECT season'
+				+', SUM(team_g) AS g'/* {{{ */
+				+', SUM(wins) AS w'
+				+', SUM(losses) AS l'
+				+', SUM(win_pct * team_g) / SUM(team_g) AS win_pct'
+				+', SUM(runs) AS rs'
+				+', SUM(runs_against) AS ra'
+				+', SUM(r_per_g * team_g) / SUM(r_per_g * team_g / r_per_g) AS r_per_g'
+				+', SUM(ra_per_g * team_g) / SUM(ra_per_g * team_g / ra_per_g) AS ra_per_g'
+				+', SUM(r) AS r'
+				+', SUM(rbi) AS rbi'
+				+', SUM(pa) AS pa'
+				+', SUM(ab) AS ab'
+				+', SUM(h) AS h'
+				+', SUM(h3) AS h3'
+				+', SUM(e) AS e'
+				+', SUM(avg * ab)/SUM(ab) AS avg'
+				+', SUM(obp * pa)/SUM(pa) AS obp'
+				+', SUM(slg*ab)/SUM(ab) AS slg'
+				+', SUM(ops*pa)/SUM(pa) AS ops'
+				+', SUM(ops_plus*pa)/SUM(pa) AS ops_plus'
+				+', SUM(woba*pa)/SUM(pa) AS woba'
+				+', SUM(wrc_plus*pa)/SUM(pa) AS wrc_plus'
+				+', SUM(wrc) AS wrc'
+				+', SUM(aobp*pa)/SUM(pa) AS aobp'
+				+', SUM(xrc_plus*pa)/SUM(pa) AS arc_plus'
+				+', SUM(xrc) AS arc'
+				+', SUM(beta_war) AS beta_war'
+				+', id_season'
+				+' FROM team_summary_stats_disp'
+				+' WHERE id_season = ' + id_season + ' AND tf_post = 1';/* }}} */
+			let leagueStatsPost = (sql2objArr(query,db))[0];
+			postData('leagueStatsPost',leagueStatsPost);
+
+			query = 'SELECT season'
+				+', SUM(team_g) AS g'/* {{{ */
+				+', SUM(wins) AS w'
+				+', SUM(losses) AS l'
+				+', SUM(win_pct * team_g) / SUM(team_g) AS win_pct'
+				+', SUM(runs) AS rs'
+				+', SUM(runs_against) AS ra'
+				+', SUM(r_per_g * team_g) / SUM(r_per_g * team_g / r_per_g) AS r_per_g'
+				+', SUM(ra_per_g * team_g) / SUM(ra_per_g * team_g / ra_per_g) AS ra_per_g'
+				+', SUM(r) AS r'
+				+', SUM(rbi) AS rbi'
+				+', SUM(pa) AS pa'
+				+', SUM(ab) AS ab'
+				+', SUM(h) AS h'
+				+', SUM(h3) AS h3'
+				+', SUM(e) AS e'
+				+', SUM(avg * ab)/SUM(ab) AS avg'
+				+', SUM(obp * pa)/SUM(pa) AS obp'
+				+', SUM(slg*ab)/SUM(ab) AS slg'
+				+', SUM(ops*pa)/SUM(pa) AS ops'
+				+', SUM(ops_plus*pa)/SUM(pa) AS ops_plus'
+				+', SUM(woba*pa)/SUM(pa) AS woba'
+				+', SUM(wrc_plus*pa)/SUM(pa) AS wrc_plus'
+				+', SUM(wrc) AS wrc'
+				+', SUM(aobp*pa)/SUM(pa) AS aobp'
+				+', SUM(xrc_plus*pa)/SUM(pa) AS arc_plus'
+				+', SUM(xrc) AS arc'
+				+', SUM(beta_war) AS beta_war'
+				+', id_season'
+				+' FROM team_summary_stats_disp'
+				+' WHERE id_season = ' + id_season;/* }}} */
+			let leagueStatsAll = (sql2objArr(query,db))[0];
+			postData('leagueStatsAll',leagueStatsAll);
 
 			query = 'SELECT name'
 				+', tm_short as team'/* {{{ */
@@ -264,9 +267,8 @@
 				+', team_g'
 				+' FROM player_stats_rate_disp psr'
 				+' WHERE id_season = '+ id_season
-				+' AND id_team = ' + id_team
 				+' AND tf_post = 0'
-				+' ORDER BY xrc DESC';/* }}} */
+				+' ORDER BY beta_war DESC';/* }}} */
 			let playerStatsResult = sql2objArr(query,db);
 			postData('playerStatsSummary',playerStatsResult);
 			//console.log('playerStatsSummary =',playerStatsResult);
@@ -301,9 +303,8 @@
 				+', team_g'
 				+' FROM player_stats_rate_disp psr'
 				+' WHERE id_season = '+ id_season
-				+' AND id_team = ' + id_team
 				+' AND tf_post = 1'
-				+' ORDER BY xrc DESC';/* }}} */
+				+' ORDER BY beta_war DESC';/* }}} */
 			let playerStatsResultPost = sql2objArr(query,db);
 			postData('playerStatsSummaryPost',playerStatsResultPost);
 	
@@ -337,13 +338,12 @@
 				+', team_g'
 				+' FROM player_stats_rate_all_disp psr'
 				+' WHERE id_season = '+ id_season
-				+' AND id_team = ' + id_team
-				+' ORDER BY xrc DESC';/* }}} */
+				+' ORDER BY beta_war DESC';/* }}} */
 			let playerStatsResultAll = sql2objArr(query,db);
 			postData('playerStatsSummaryAll',playerStatsResultAll);
 	
 			query = 'SELECT MAX(wrc) AS wrc'
-		//		+', MAX(gwrc) as gwrc'{{{
+		//		+', MAX(gwrc) as gwrc'/* {{{ */
 				+', MAX(xrc) AS arc'
 				//+', MAX(gxrc) AS garc'
 				+', MAX(beta_war) as beta_war'
@@ -367,13 +367,12 @@
 				+', MAX(xrc_plus) AS arc_plus'
 				+' FROM player_stats_rate_disp'
 				+' WHERE id_season = ' + id_season
-				+' AND id_team = ' + id_team
 				+' AND tf_post = 0';/* }}} */
 			let playerStatsMax = (sql2objArr(query,db))[0];
 			postData('playerStatsSummaryMax',playerStatsMax);
 			
 			query = 'SELECT MAX(wrc) AS wrc'
-		//		+', MAX(gwrc) as gwrc'{{{
+		//		+', MAX(gwrc) as gwrc'/* {{{ */
 				+', MAX(xrc) AS arc'
 				//+', MAX(gxrc) AS garc'
 				+', MAX(beta_war) AS beta_war'
@@ -397,13 +396,12 @@
 				+', MAX(xrc_plus) AS arc_plus'
 				+' FROM player_stats_rate_disp'
 				+' WHERE id_season = ' + id_season
-				+' AND id_team = ' + id_team
 				+' AND tf_post = 1';/* }}} */
 			let playerStatsMaxPost = (sql2objArr(query,db))[0];
 			postData('playerStatsSummaryMaxPost',playerStatsMaxPost);
 
 			query = 'SELECT MAX(wrc) AS wrc'
-		//		+', MAX(gwrc) as gwrc'{{{
+		//		+', MAX(gwrc) as gwrc'/* {{{ */
 				+', MAX(xrc) AS arc'
 				//+', MAX(gxrc) AS garc'
 				+', MAX(beta_war) AS beta_war'
@@ -430,6 +428,25 @@
 				+' AND id_team = ' + id_team;/* }}} */
 			let playerStatsMaxAll = (sql2objArr(query,db))[0];
 			postData('playerStatsSummaryMaxAll',playerStatsMaxAll);
+
+			query = 'SELECT id_series'
+				+', date_series'
+				+', id_season'/* {{{ */
+				+', id_team'
+				+', id_team_opp'
+				+', tm_long AS team'
+				+', opp_long AS opp'
+				+', w'
+				+', l'
+				+' FROM game_log_team_stats_disp'
+				+' WHERE id_season = ' + id_season
+				+' AND ha = \'h\''
+				+' AND tf_post = 1'
+				+' AND COALESCE(w,l) IS NOT NULL'
+				+' ORDER BY date_series DESC';/* }}} */
+			let playoffResults = sql2objArr(query,db);
+			postData('playoffResults',playoffResults);
+
 
 		} catch(e) {
 			/* {{{ */
