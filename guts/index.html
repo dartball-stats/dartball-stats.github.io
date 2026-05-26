@@ -62,7 +62,7 @@
 							logHtml(data.payload.cssClass, ...data.payload.args);
 							break;
 						case 'passwordReset':
-							document.cookie = "password=;max-age=0";
+							document.cookie = "password=;max-age=0;path=/";
 						case 'linearWeights':
 							linearWeights = data.payload.arg;
 							dartball.printTeamSchedule(linearWeights,undefined,"table_weights");
