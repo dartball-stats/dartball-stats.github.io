@@ -41,7 +41,7 @@
 	      };
 				const params = new URL(globalThis.location.href).searchParams;
 				const t = params.get("t") ?? 13;// id_team
-				const y = params.get("y") ?? 4;// id_season
+				const y = params.get("y") ?? 5;// id_season
 	      const w = new Worker("worker.js?sqlite3.dir="+encodeURIComponent("/jswasm")+"&t="+t+"&y="+y);
 
 				// password management

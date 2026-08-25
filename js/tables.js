@@ -377,7 +377,7 @@ class dartball {
 			};
 	
 			// next season button
-			if (teamSummary.id_season < 4) {
+			if (teamSummary.id_season < 5) {
 				let a = div_info.querySelector(".button2.next")
 				a.href = ".?t=" + teamSummary.id_team + "&y=" + (teamSummary.id_season + 1);
 				a.textContent = (Number(teamSummary.season) + 1) + " Season";
@@ -557,7 +557,7 @@ class dartball {
 			};
 	
 			// next season button
-			if (leagueSummary.id_season < 4) {
+			if (leagueSummary.id_season < 5) {
 				let a = div_info.querySelector(".button2.next")
 				a.href = ".?y=" + (leagueSummary.id_season + 1);
 				a.textContent = (Number(leagueSummary.season) + 1) + " Season";
