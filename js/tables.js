@@ -420,7 +420,7 @@ class dartball {
 				div.appendChild(p);
 				p.innerHTML = "<strong>aRC:</strong> " 
 					+ (teamSummary.arc).toFixed(1)
-					+ " (" + (teamSummary.arc / teamSummary.team_g).toFixed(2) + " wRC/g)";
+					+ " (" + (teamSummary.arc / teamSummary.team_g).toFixed(2) + " aRC/g)";
 
 				p = document.createElement("p");
 				div.appendChild(p);
