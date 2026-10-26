@@ -402,6 +402,15 @@ class dartball {
 					+ teamSummary.w + "-" + teamSummary.l
 					+ " (" + (teamSummary.win_pct).toFixed(3).replace(/^0+/,'') + ")";
 			}
+
+			if (teamSummary.beta_war !== null) {
+				p = document.createElement("p");
+				div.appendChild(p);
+				p.innerHTML = "<strong>&#946;W-L:</strong> "
+					+ (teamSummary.beta_war).toFixed(1) + "-" 
+					+ Number(teamSummary.team_g - teamSummary.beta_war).toFixed(1)
+					+ " (" + Number(teamSummary.beta_war / teamSummary.team_g).toFixed(3).replace(/^0+/,'') + ")";
+			}
 			
 			if (teamSummary.rbi !== null) {
 				p = document.createElement("p");
@@ -508,6 +517,15 @@ class dartball {
 					+ teamSummary.w + "-" + teamSummary.l
 					+ " (" + (teamSummary.w/ (teamSummary.w + teamSummary.l)).toFixed(3).replace(/^0+/,'') + ")";
 			};
+
+			if (teamSummary.beta_war !== null) {
+				p = document.createElement("p");
+				div.appendChild(p);
+				p.innerHTML = "<strong>&#946;W-L:</strong> "
+					+ (teamSummary.beta_war).toFixed(1) + "-" 
+					+ Number(teamSummary.team_g - teamSummary.beta_war).toFixed(1)
+					+ " (" + Number(teamSummary.beta_war / teamSummary.team_g).toFixed(3).replace(/^0+/,'') + ")";
+			}
 
 			if (teamSummary.rbi !== null) {
 				let team_gp = (teamSummary.w + teamSummary.l);
